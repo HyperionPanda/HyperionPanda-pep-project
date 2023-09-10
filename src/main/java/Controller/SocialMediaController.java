@@ -1,5 +1,9 @@
 package Controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import Model.Account;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -17,7 +21,7 @@ public class SocialMediaController {
     public Javalin startAPI() {
         Javalin app = Javalin.create();
         app.get("example-endpoint", this::exampleHandler);
-
+        app.post("/register",this::userRegistrationHandler);
         return app;
     }
 
@@ -27,6 +31,14 @@ public class SocialMediaController {
      */
     private void exampleHandler(Context context) {
         context.json("sample text");
+    }
+
+    private void userRegistrationHandler(Context context) throws JsonProcessingException{
+        ObjectMapper map = new ObjectMapper();
+        Account newAccount = map.readValue(context.body(), Account.class);
+        if (newAccount.getUsername() != null && newAccount.getPassword().length() >= 4){
+            
+        }
     }
 
 
